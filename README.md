@@ -1,374 +1,361 @@
-# 🪙 Bitcoin Backtesting System with Futures Support
+# 🚀 Universal Crypto Backtesting Engine
 
-A comprehensive Python backtesting framework for Bitcoin trading strategies supporting both spot (long) and futures (short) positions.
+[![Python](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Hyperliquid](https://img.shields.io/badge/Hyperliquid-API-orange.svg)](https://hyperliquid.xyz)
 
-## 📋 Features
+A comprehensive cryptocurrency backtesting framework supporting **any crypto asset** including Bitcoin, Ethereum, SPDR, GLAM, and 200+ other coins with **both spot and futures** trading.
 
-### Trading Capabilities
-- ✅ **Spot Trading**: Traditional buy/sell long positions
-- ✅ **Futures Trading**: Short selling and covering positions
-- ✅ **Multiple Strategies**: 5 pre-built trading strategies
-- ✅ **Custom Parameters**: Fully customizable strategy parameters
+## ✨ Features
 
-### Technical Indicators
-- Simple Moving Averages (SMA)
-- Exponential Moving Averages (EMA)
-- MACD (Moving Average Convergence Divergence)
-- RSI (Relative Strength Index)
-- Bollinger Bands
-- ATR (Average True Range)
+### 🌐 Universal Asset Support
+- ✅ **Bitcoin (BTC)** - Most popular cryptocurrency
+- ✅ **Ethereum (ETH)** - Second largest crypto  
+- ✅ **Solana (SOL)** - High-performance blockchain
+- ✅ **SPDR Token** - SPDR ETF token
+- ✅ **GLAM Token** - GLAM project token
+- ✅ **200+ other cryptocurrencies** on Hyperliquid
 
-### Performance Metrics
-- Total Return & P&L
-- Win Rate & Profit Factor
-- Sharpe Ratio
-- Maximum Drawdown
-- Average Win/Loss
-- Commission Costs
-- Trade Statistics (long vs short)
+### 📊 Trading Capabilities
+- ✅ **5 Pre-built Strategies**: SMA Crossover, RSI Mean Reversion, MACD Momentum, Bollinger Bands, Dual Momentum
+- ✅ **Real Market Data**: Fetch live historical data from Hyperliquid API
+- ✅ **Spot & Futures Support**: Long and short positions
+- ✅ **Comprehensive Metrics**: Sharpe ratio, max drawdown, win rate, profit factor
+- ✅ **Multi-Asset Comparison**: Compare performance across different cryptocurrencies
+- ✅ **Strategy Optimization**: Test multiple parameter combinations
 
-### Visualization
-- Price charts with entry/exit markers
-- Portfolio value over time
-- Technical indicator plots
-- Individual trade P&L
-- Strategy comparison charts
+### 🛠️ Additional Features
+- ✅ **Interactive Notebooks**: Jupyter notebooks for hands-on learning
+- ✅ **Visualization Tools**: Detailed performance charts and analysis
+- ✅ **24/7 Hosting Ready**: Complete deployment scripts for cloud servers
+- ✅ **Pip Installable**: Easy installation as a Python package
 
 ## 🚀 Quick Start
 
-### Option 1: Python Script
+### Installation
 
+```bash
+# Clone repository
+git clone https://github.com/cktong/crypto-backtest-engine.git
+cd crypto-backtest-engine
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Or install as a package
+pip install -e .
+```
+
+### Your First Backtest
+
+**Test Bitcoin:**
 ```python
-from bitcoin_backtest import BitcoinBacktester
+from core import CryptoBacktester
 
-# Initialize backtester
-bt = BitcoinBacktester(initial_capital=10000, commission=0.001)
+# Initialize for Bitcoin
+bt = CryptoBacktester(asset_symbol="BTC", initial_capital=10000)
 
-# Load data (generates synthetic data by default)
-bt.load_data(days=365)
-
-# Calculate technical indicators
+# Load real data from Hyperliquid
+bt.load_data(days=30, interval="1h")
 bt.calculate_indicators()
 
-# Run a strategy
+# Run SMA Crossover strategy with short selling
 metrics = bt.run_strategy('sma_crossover', 
                          fast_period=20, 
                          slow_period=50, 
                          allow_short=True)
 
-# Print results
+# View results
 bt.print_performance_report(metrics)
-
-# Visualize
 bt.plot_results()
-
-# Export trades
-bt.export_trades('my_trades.csv')
 ```
 
-### Option 2: Jupyter Notebook
+**Test SPDR Token:**
+```python
+# Just change the asset_symbol - everything else stays the same!
+bt_spdr = CryptoBacktester(asset_symbol="SPDR", initial_capital=10000)
+bt_spdr.load_data(days=30, interval="1h")
+bt_spdr.calculate_indicators()
+metrics_spdr = bt_spdr.run_strategy('sma_crossover', allow_short=True)
+bt_spdr.print_performance_report(metrics_spdr)
+```
 
-Open `bitcoin_backtest_notebook.ipynb` for an interactive experience with:
-- Step-by-step walkthroughs
-- Multiple strategy comparisons
-- Parameter optimization examples
-- Detailed visualizations
+**Test GLAM Token:**
+```python
+bt_glam = CryptoBacktester(asset_symbol="GLAM", initial_capital=10000)
+bt_glam.load_data(days=30, interval="1h")
+bt_glam.calculate_indicators()
+metrics_glam = bt_glam.run_strategy('sma_crossover', allow_short=True)
+bt_glam.print_performance_report(metrics_glam)
+```
 
-### Option 3: Quick Demo
+### Quick Examples
 
-Run the built-in example:
-
+**Option 1: Quick Start Script**
 ```bash
-python bitcoin_backtest.py
+python3 examples/quick_start.py
 ```
 
-This will:
-1. Load synthetic Bitcoin price data
-2. Run all 5 strategies
-3. Compare performance
-4. Generate plots and CSV exports
+**Option 2: Multi-Asset Comparison**
+```bash
+python3 examples/multi_asset_comparison.py
+```
 
-## 📊 Available Strategies
+**Option 3: Interactive Notebook**
+```bash
+jupyter notebook notebooks/01_quick_start.ipynb
+```
+
+## 🎯 Available Strategies
 
 ### 1. SMA Crossover
-Buy when fast SMA crosses above slow SMA. Short when it crosses below.
-
+Trend-following strategy using moving average crossovers.
 ```python
-bt.run_strategy('sma_crossover', 
-                fast_period=20, 
-                slow_period=50, 
-                allow_short=True)
+bt.run_strategy('sma_crossover', fast_period=20, slow_period=50, allow_short=True)
 ```
 
 ### 2. RSI Mean Reversion
-Buy when RSI < oversold threshold. Short when RSI > overbought threshold.
-
+Buy oversold, sell overbought conditions.
 ```python
-bt.run_strategy('rsi_mean_reversion', 
-                oversold=30, 
-                overbought=70, 
-                allow_short=True)
+bt.run_strategy('rsi_mean_reversion', oversold=30, overbought=70, allow_short=True)
 ```
 
 ### 3. MACD Momentum
-Buy when MACD crosses above signal line. Short when it crosses below.
-
+Momentum-based entries using MACD signals.
 ```python
 bt.run_strategy('macd_momentum', allow_short=True)
 ```
 
 ### 4. Bollinger Bands
-Buy when price touches lower band. Short when price touches upper band.
-
+Volatility-based trading at band extremes.
 ```python
 bt.run_strategy('bollinger_bands', allow_short=True)
 ```
 
 ### 5. Dual Momentum
-Combines trend (SMA) and momentum (RSI) for stronger confirmation signals.
-
+Combined trend and momentum confirmation.
 ```python
 bt.run_strategy('dual_momentum', allow_short=True)
 ```
 
-## 💾 Using Your Own Data
+## 📊 Supported Assets
 
-To use real Bitcoin price data:
+### Major Cryptocurrencies
+| Symbol | Name | Category | Exchanges |
+|--------|------|----------|-----------|
+| BTC | Bitcoin | Layer 1 | Hyperliquid, Binance, Coinbase |
+| ETH | Ethereum | Layer 1 | Hyperliquid, Binance, Coinbase |
+| SOL | Solana | Layer 1 | Hyperliquid, Binance, Coinbase |
+| HYPE | Hyperliquid | Exchange Token | Hyperliquid |
+
+### Tokens
+| Symbol | Name | Category | Exchanges |
+|--------|------|----------|-----------|
+| SPDR | SPDR Token | Token | Hyperliquid |
+| GLAM | GLAM Token | Token | Hyperliquid |
+
+### Layer 2 Solutions
+| Symbol | Name | Category | Exchanges |
+|--------|------|----------|-----------|
+| AVAX | Avalanche | Layer 1 | Hyperliquid, Binance |
+| MATIC | Polygon | Layer 2 | Hyperliquid, Binance |
+| OP | Optimism | Layer 2 | Hyperliquid, Binance |
+| ARB | Arbitrum | Layer 2 | Hyperliquid, Binance |
+
+**Plus 200+ other cryptocurrencies on Hyperliquid!**
+
+To see all available assets:
+```python
+from config import list_available_assets, print_all_assets
+print_all_assets()
+```
+
+## 💡 Multi-Asset Comparison
+
+Compare performance across different cryptocurrencies:
 
 ```python
-import pandas as pd
+from core import CryptoBacktester
 
-# Load your CSV data
-# Required columns: timestamp, open, high, low, close, volume
-your_data = pd.read_csv('bitcoin_prices.csv')
+assets = ["BTC", "ETH", "SOL", "SPDR", "GLAM"]
+results = {}
 
-# Create backtester with your data
-bt = BitcoinBacktester(initial_capital=10000, commission=0.001)
-bt.load_data(data=your_data)
-bt.calculate_indicators()
-
-# Run strategies as normal
-metrics = bt.run_strategy('sma_crossover', allow_short=True)
+for asset in assets:
+    bt = CryptoBacktester(asset_symbol=asset, initial_capital=10000)
+    bt.load_data(days=30, interval="1h")
+    bt.calculate_indicators()
+    metrics = bt.run_strategy('sma_crossover', allow_short=True)
+    results[asset] = metrics
+    
+# Compare results
+for asset, metrics in results.items():
+    print(f"{asset}: {metrics['total_return']:.2f}% return, "
+          f"{metrics['win_rate']:.2f}% win rate")
 ```
 
-### Data Format Requirements
+## 📁 Project Structure
 
-Your CSV should have these columns:
-- `timestamp`: Date/time (any format pandas can parse)
-- `open`: Opening price
-- `high`: Highest price in period
-- `low`: Lowest price in period
-- `close`: Closing price
-- `volume`: Trading volume (optional but recommended)
-
-Example:
 ```
-timestamp,open,high,low,close,volume
-2024-01-01,42000,43000,41500,42500,1500000
-2024-01-02,42500,43500,42000,43200,1800000
-...
+crypto-backtest-engine/
+├── core/                      # Core backtesting engine
+│   ├── __init__.py
+│   └── backtest_engine.py     # CryptoBacktester class
+│
+├── data_sources/              # Data fetchers for exchanges
+│   ├── __init__.py
+│   ├── base_fetcher.py        # Abstract base class
+│   └── hyperliquid_fetcher.py # Hyperliquid implementation
+│
+├── config/                    # Configuration files
+│   ├── __init__.py
+│   └── assets.py              # Asset configurations
+│
+├── examples/                  # Example scripts
+│   ├── quick_start.py
+│   └── multi_asset_comparison.py
+│
+├── notebooks/                 # Jupyter notebooks
+│   └── 01_quick_start.ipynb
+│
+├── tests/                     # Unit tests
+│   └── test_backtest_engine.py
+│
+├── docs/                      # Documentation
+│   ├── QUICKSTART.md
+│   ├── HYPERLIQUID_GUIDE.md
+│   └── MULTI_ASSET_GUIDE.md
+│
+├── setup.py                   # Package setup
+├── requirements.txt           # Dependencies
+└── README.md                  # This file
 ```
 
-## 🎯 Parameter Optimization
+## 🔧 Advanced Usage
 
-Test different parameters to find optimal settings:
+### Custom Asset Configuration
+
+Add your own assets to `config/assets.py`:
 
 ```python
-# Test multiple SMA combinations
+ASSET_CONFIG = {
+    "YOUR_TOKEN": {
+        "name": "Your Token",
+        "exchanges": ["hyperliquid"],
+        "default_commission": 0.002,
+        "min_investment": 100,
+        "description": "Your custom token"
+    }
+}
+```
+
+### Parameter Optimization
+
+Find optimal strategy parameters:
+
+```python
+best_return = -float('inf')
+best_params = None
+
 for fast in [10, 20, 30]:
     for slow in [50, 100, 200]:
-        bt = BitcoinBacktester(initial_capital=10000)
-        bt.data = original_data.copy()
+        bt = CryptoBacktester(asset_symbol="BTC")
+        bt.load_data(days=90, interval="1h")
+        bt.calculate_indicators()
         metrics = bt.run_strategy('sma_crossover', 
                                  fast_period=fast, 
                                  slow_period=slow)
-        print(f"SMA({fast}/{slow}): Return = {metrics['total_return']:.2f}%")
+        
+        if metrics['total_return'] > best_return:
+            best_return = metrics['total_return']
+            best_params = (fast, slow)
+
+print(f"Best parameters: SMA({best_params[0]}/{best_params[1]}) "
+      f"with {best_return:.2f}% return")
 ```
 
-## 📈 Understanding Results
+## 📈 Supported Data
 
-### Performance Report Example
+### Timeframes
+- **1m, 3m, 5m, 15m, 30m** (short-term)
+- **1h, 2h, 4h, 8h, 12h** (medium-term) ⭐ Recommended
+- **1d, 3d, 1w, 1M** (long-term)
 
-```
-============================================================
-BITCOIN BACKTESTING PERFORMANCE REPORT
-============================================================
+### Data Limits (Hyperliquid)
+- Hyperliquid stores **5000 most recent candles** per interval
+- 1h candles: ~7 months history
+- 4h candles: ~2.3 years history
+- 1d candles: ~13.7 years history
 
-📊 CAPITAL & RETURNS
-Initial Capital:        $10,000.00
-Final Capital:          $12,450.00
-Total P&L:              $2,450.00
-Total Return:           24.50%
+## 🌐 24/7 Hosting
 
-📈 TRADE STATISTICS
-Total Trades:           45
-Long Trades:            23
-Short Trades:           22
-Winning Trades:         28
-Losing Trades:          17
-Win Rate:               62.22%
-
-💰 PROFIT METRICS
-Profit Factor:          1.85
-Average Trade:          $54.44
-Average Win:            $145.20
-Average Loss:           -$78.50
-
-⚠️  RISK METRICS
-Max Drawdown:           12.35%
-Sharpe Ratio:           1.42
-Total Commission:       $125.00
-============================================================
-```
-
-### Key Metrics Explained
-
-- **Total Return**: Percentage gain/loss on initial capital
-- **Win Rate**: Percentage of profitable trades
-- **Profit Factor**: Ratio of gross profit to gross loss (>1 is profitable)
-- **Sharpe Ratio**: Risk-adjusted return (>1 is good, >2 is excellent)
-- **Max Drawdown**: Largest peak-to-trough decline
-
-## 🔧 Advanced Features
-
-### Commission Settings
-
-Adjust trading commissions to match your exchange:
-
-```python
-bt = BitcoinBacktester(initial_capital=10000, commission=0.002)  # 0.2%
-```
-
-### Disable Short Selling
-
-Test long-only strategies:
-
-```python
-metrics = bt.run_strategy('sma_crossover', allow_short=False)
-```
-
-### Export Trade History
-
-Save detailed trade logs for external analysis:
-
-```python
-bt.export_trades('trades.csv')
-```
-
-The CSV includes:
-- Timestamp
-- Action (buy/sell/short/cover)
-- Price
-- Quantity
-- Position type (spot/futures)
-- Commission
-- Total cost
-
-## 📦 Requirements
+Deploy your backtesting system to run continuously:
 
 ```bash
-pip install pandas numpy matplotlib
+# Quick deploy to DigitalOcean
+bash server_setup.sh
+
+# Access Jupyter remotely
+# Open browser: http://YOUR_SERVER_IP:8888
 ```
 
-- Python 3.7+
-- pandas >= 1.3.0
-- numpy >= 1.21.0
-- matplotlib >= 3.4.0
+**Complete guides:**
+- [HOSTING_QUICKSTART.md](HOSTING_QUICKSTART.md) - 30-minute setup
+- [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) - All hosting options
 
-## 🎓 Educational Use
+## ⚠️ Important Notes
 
-This backtesting system is designed for:
-- Learning algorithmic trading concepts
-- Testing trading hypotheses
-- Understanding technical indicators
-- Comparing strategy performance
-- Risk management analysis
+### Backtesting Limitations
+Backtests don't account for:
+- Slippage (price movement during order execution)
+- Liquidity issues (large orders may not fill)
+- Latency delays
+- Market impact
 
-⚠️ **Disclaimer**: Past performance does not guarantee future results. This is for educational purposes only. Always do your own research before trading real money.
+### Risk Disclaimer
+**Past performance ≠ future results**
 
-## 📝 Files Generated
+This software is for **educational purposes only**. Always:
+- Start with small capital
+- Use stop losses in live trading
+- Monitor performance regularly
+- Do your own research
 
-Running the backtester creates:
-- `backtest_results.png`: Comprehensive visualization
-- `trades.csv`: Detailed trade history
-- `best_strategy_trades.csv`: Trades from best performer
+## 🤝 Contributing
 
-## 🤝 Extending the System
+Contributions welcome! To add support for new exchanges or assets:
 
-Add your own strategy:
+1. Fork the repository
+2. Create `data_sources/your_exchange_fetcher.py` inheriting from `BaseDataFetcher`
+3. Add asset configs to `config/assets.py`
+4. Submit a pull request
 
-```python
-class BitcoinBacktester:
-    def _strategy_custom(self, param1, param2, allow_short=True):
-        """Your custom strategy logic."""
-        df = self.data
-        position = None
-        position_size = 0
-        capital = self.initial_capital
-        
-        for i in range(50, len(df)):
-            current_price = df.iloc[i]['close']
-            
-            # Your buy logic
-            if your_buy_condition:
-                position_size = (capital * 0.95) / current_price
-                self.execute_trade(i, 'buy', current_price, position_size)
-                # ... position tracking
-            
-            # Your sell logic
-            elif your_sell_condition:
-                # ... exit logic
-                pass
-        
-        # Close remaining positions
-        # ...
-```
+## 📝 License
 
-Then use it:
+MIT License - See LICENSE file for details
 
-```python
-bt.run_strategy('custom', param1=value1, param2=value2)
-```
+## 🔗 Links
 
-## 📚 Resources
+- **Repository**: https://github.com/cktong/crypto-backtest-engine
+- **Hyperliquid**: https://hyperliquid.xyz
+- **Documentation**: https://hyperliquid.gitbook.io/hyperliquid-docs/
 
-- [Technical Analysis Library](https://technical-analysis-library-in-python.readthedocs.io/)
-- [Backtrader Documentation](https://www.backtrader.com/docu/)
-- [Quantopian Lectures](https://www.quantopian.com/lectures)
+## 📧 Contact
 
-## 🐛 Troubleshooting
+- **GitHub**: [@cktong](https://github.com/cktong)
+- **Issues**: [Report bugs](https://github.com/cktong/crypto-backtest-engine/issues)
 
-### "No trades executed"
-- Check that your data has enough history for the indicators
-- Verify strategy parameters aren't too restrictive
-- Ensure data has no gaps or missing values
+## 🎉 Getting Started
 
-### Poor performance
-- Try different parameter combinations
-- Consider market conditions (trending vs ranging)
-- Adjust position sizing or risk management
-- Test on different time periods
+1. **Clone the repository**: `git clone https://github.com/cktong/crypto-backtest-engine.git`
+2. **Install dependencies**: `pip install -r requirements.txt`
+3. **Run quick start**: `python3 examples/quick_start.py`
+4. **Try SPDR/GLAM**: Just change `asset_symbol="SPDR"` or `asset_symbol="GLAM"`!
+5. **Deploy to cloud** (optional): Follow [HOSTING_QUICKSTART.md](HOSTING_QUICKSTART.md)
 
-### Memory issues with large datasets
-- Process data in chunks
-- Reduce indicator lookback periods
-- Use more efficient data structures
+Happy backtesting across all markets! 📈🚀
 
-## 📞 Support
+---
 
-For questions or issues:
-1. Check the Jupyter notebook examples
-2. Review strategy documentation
-3. Test with synthetic data first
-4. Verify data format requirements
+**⭐ If you find this useful, please star the repository!**
 
-## 🎉 Next Steps
-
-1. **Run the example**: `python bitcoin_backtest.py`
-2. **Explore notebook**: Open `bitcoin_backtest_notebook.ipynb`
-3. **Load your data**: Use real Bitcoin prices
-4. **Optimize parameters**: Test different settings
-5. **Create custom strategies**: Extend the framework
-6. **Analyze results**: Study winning patterns
-
-Happy backtesting! 📈🚀
+**💡 Pro Tip**: Different assets perform differently with the same strategy. Always test multiple assets and strategies to find what works best for your trading style!
